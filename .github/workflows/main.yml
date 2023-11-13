@@ -20,7 +20,7 @@ jobs:
         with:
           gradle-version: 8.4
           arguments: test
-          build-root-directory: /app
+          build-root-directory: /app.
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v5.0.0
         env:
