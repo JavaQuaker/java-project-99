@@ -1,0 +1,5 @@
+spring:
+  datasource:
+    username: "alexey"
+    password: "111"
+    url: "jdbc:h2:./taskManager"
