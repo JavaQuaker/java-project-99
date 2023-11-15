@@ -1,5 +1,26 @@
+#spring:
+#  jpa:
+#    show-sql: true
+#    hibernate:
+#      ddl-auto: update
+
+base-url: ""
+
 spring:
+  application:
+    name: taskManagerTest
+
   jpa:
     show-sql: true
+
     hibernate:
       ddl-auto: update
+
+  mvc:
+    hiddenmethod:
+      filter:
+        enabled: true
+
+logging:
+  level:
+    root: INFO

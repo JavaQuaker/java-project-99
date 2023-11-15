@@ -21,8 +21,6 @@ public class ModelGenerator {
     public void init() {
         userModel = Instancio.of(User.class)
                 .ignore(Select.field(User::getId))
-                .ignore(Select.field(User::getFirstName))
-                .ignore(Select.field(User::getLastName))
                 .supply(Select.field(User::getFirstName), () -> faker.name().firstName())
                 .supply(Select.field(User::getLastName), () -> faker.name().lastName())
                 .supply(Select.field(User::getEmail), () -> faker.internet().emailAddress())

@@ -5,6 +5,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Table;
 import jakarta.persistence.Column;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.EqualsAndHashCode;
@@ -26,19 +27,23 @@ public class User {
     private long id;
 
     @ToString.Include
+    @NotBlank
     private String firstName;
 
     @ToString.Include
+    @NotBlank
     private String lastName;
 
-    @Column(unique = true)
     @Email
+    @Column(unique = true)
     private String email;
 
-    private String password;
+    private String passwordDigest;
 
     private LocalDate createdAt;
     private LocalDate updateAt;
 
-
+    public String getPassword() {
+        return passwordDigest;
+    }
 }
