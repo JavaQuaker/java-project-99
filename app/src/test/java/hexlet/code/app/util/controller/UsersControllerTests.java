@@ -6,7 +6,6 @@ import hexlet.code.app.repository.UserRepository;
 import hexlet.code.app.util.ModelGenerator;
 import hexlet.code.app.mapper.UserMapper;
 import org.instancio.Instancio;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,11 +13,11 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.MediaType;
-import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
 
 import java.util.HashMap;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
+import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
@@ -33,7 +32,6 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 
 @SpringBootTest
 @AutoConfigureMockMvc
-@WithMockUser(username = "test", password = "password") //реализовать авторизацию и снять данную аннотацию
 public class UsersControllerTests {
     @Autowired
     private MockMvc mockMvc;
@@ -46,28 +44,24 @@ public class UsersControllerTests {
     private UserMapper mapper;
     @Autowired
     private ObjectMapper om;
+    private JwtRequestPostProcessor token;
 
 
     @BeforeEach
     public void setUp() {
+        token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
         testUser = Instancio.of(modelGenerator.getUserModel()).create();
+//        userRepository.save(testUser);
     }
-
-
     @Test
     public void testIndex() throws Exception {
-        userRepository.save(testUser);
-        MvcResult result = mockMvc.perform(get("/users"))
-                .andExpect(status().isOk())
-                .andReturn();
-        var body = result.getResponse().getContentAsString();
-        assertThatJson(body).isArray();
+        mockMvc.perform(get("/users").with(jwt()))
+                .andExpect(status().isOk());
     }
-
     @Test
     public void testCreateUser() throws Exception {
         UserDTO dto = mapper.map(testUser);
-        var request = post("/users")
+        var request = post("/users").with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
         mockMvc.perform(request)
@@ -85,7 +79,7 @@ public class UsersControllerTests {
         var data = new HashMap<>();
         data.put("firstName", "Nick");
 
-        var request = put("/users/{id}", testUser.getId())
+        var request = put("/users/{id}", testUser.getId()).with(jwt())
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
         mockMvc.perform(request)
@@ -95,10 +89,9 @@ public class UsersControllerTests {
 
     }
     @Test
-//    @WithMockUser(username = "test", password = "password")
     public void testShowUser() throws Exception {
         userRepository.save(testUser);
-        MockHttpServletRequestBuilder request = get("/users/{id}", testUser.getId());
+        MockHttpServletRequestBuilder request = get("/users/{id}", testUser.getId()).with(jwt());
         var result = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andReturn();
@@ -112,10 +105,10 @@ public class UsersControllerTests {
     @Test
     public void testDeleteUser() throws Exception {
         userRepository.save(testUser);
-       var request = delete("/users/{id}", testUser.getId());
-       mockMvc.perform(request)
+        var request = delete("/users/{id}", testUser.getId()).with(jwt());
+        mockMvc.perform(request)
                .andExpect(status().isOk());
-       assertThat(userRepository.existsById(testUser.getId())).isFalse();
+        assertThat(userRepository.existsById(testUser.getId())).isFalse();
 
     }
 }

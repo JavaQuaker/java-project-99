@@ -10,12 +10,12 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.mapstruct.ReportingPolicy;
 
-@Mapper( nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
+@Mapper(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE,
         componentModel = MappingConstants.ComponentModel.SPRING,
         unmappedTargetPolicy = ReportingPolicy.IGNORE
 )
 public abstract class UserMapper {
-   public abstract UserDTO map(User dto);
-   public abstract User map(UserCreateDTO dto);
-   public abstract void update(UserUpdateDTO dto, @MappingTarget User model);
+    public abstract UserDTO map(User dto);
+    public abstract User map(UserCreateDTO dto);
+    public abstract void update(UserUpdateDTO dto, @MappingTarget User model);
 }
