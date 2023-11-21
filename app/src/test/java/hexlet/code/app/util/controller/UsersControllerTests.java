@@ -61,7 +61,7 @@ public class UsersControllerTests {
     @Test
     public void testCreateUser() throws Exception {
         UserDTO dto = mapper.map(testUser);
-        var request = post("/users").with(jwt())
+        var request = post("/users").with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(dto));
         mockMvc.perform(request)
@@ -79,7 +79,7 @@ public class UsersControllerTests {
         var data = new HashMap<>();
         data.put("firstName", "Nick");
 
-        var request = put("/users/{id}", testUser.getId()).with(jwt())
+        var request = put("/users/{id}", testUser.getId()).with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
         mockMvc.perform(request)
@@ -91,7 +91,7 @@ public class UsersControllerTests {
     @Test
     public void testShowUser() throws Exception {
         userRepository.save(testUser);
-        MockHttpServletRequestBuilder request = get("/users/{id}", testUser.getId()).with(jwt());
+        MockHttpServletRequestBuilder request = get("/users/{id}", testUser.getId()).with(token);
         var result = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andReturn();
@@ -105,7 +105,7 @@ public class UsersControllerTests {
     @Test
     public void testDeleteUser() throws Exception {
         userRepository.save(testUser);
-        var request = delete("/users/{id}", testUser.getId()).with(jwt());
+        var request = delete("/users/{id}", testUser.getId()).with(token);
         mockMvc.perform(request)
                .andExpect(status().isOk());
         assertThat(userRepository.existsById(testUser.getId())).isFalse();

@@ -24,26 +24,26 @@ import java.util.List;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api")
 public class UsersController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
 
-    @GetMapping(path = "")
+    @GetMapping(path = "/users")
     public List<UserDTO> index() {
         var result = userRepository.findAll();
         return result.stream().map(v -> userMapper.map(v))
                 .toList();
     }
-    @GetMapping(path = "/{id}")
+    @GetMapping(path = "/users/{id}")
     private UserDTO show(@PathVariable long id) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id" + " " + id + " " + "not found"));
         return userMapper.map(user);
     }
-    @PostMapping(path = "")
+    @PostMapping(path = "/users")
     @ResponseStatus(HttpStatus.CREATED)
     private UserDTO create(@Valid @RequestBody UserCreateDTO userData) {
         User user = userMapper.map(userData);
@@ -51,7 +51,7 @@ public class UsersController {
         var userDTO = userMapper.map(user);
         return userDTO;
     }
-    @PutMapping(path = "/{id}")
+    @PutMapping(path = "/users/{id}")
     @ResponseStatus(HttpStatus.OK)
     UserDTO update(@RequestBody UserUpdateDTO userData, @PathVariable long id) {
         var user = userRepository.findById(id)
@@ -62,7 +62,7 @@ public class UsersController {
         return userDTO;
 
     }
-    @DeleteMapping(path = "/{id}")
+    @DeleteMapping(path = "/users/{id}")
     public void delete(@PathVariable long id) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id" + " " +  id + " " + "not found"));
