@@ -25,7 +25,7 @@ public class DataInitializer implements ApplicationRunner {
         var userData = new UserCreateDTO();
         userData.setFirstName("hexlet");
         userData.setEmail("hexlet@example@com");
-        userData.setPasswordDigest("123");
+        userData.setPassword("123");
         var user = userMapper.map(userData);
         userRepository.save(user);
     }

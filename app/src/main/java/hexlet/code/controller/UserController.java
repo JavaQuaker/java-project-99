@@ -5,7 +5,6 @@ import hexlet.code.dto.UserDTO;
 import hexlet.code.dto.UserUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
-import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +24,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/users")
-public class UsersController {
+public class UserController {
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -38,14 +37,14 @@ public class UsersController {
                 .toList();
     }
     @GetMapping(path = "/{id}")
-    private UserDTO show(@PathVariable long id) {
+    public UserDTO show(@PathVariable long id) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id" + " " + id + " " + "not found"));
         return userMapper.map(user);
     }
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    private UserDTO create(@Valid @RequestBody UserCreateDTO userData) {
+    public UserDTO create(@Valid @RequestBody UserCreateDTO userData) {
         var user = userMapper.map(userData);
         userRepository.save(user);
         var userDTO = userMapper.map(user);

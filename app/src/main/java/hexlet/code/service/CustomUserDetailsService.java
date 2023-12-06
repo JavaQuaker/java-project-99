@@ -1,16 +1,21 @@
 package hexlet.code.service;
 
+import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.provisioning.UserDetailsManager;
 import org.springframework.stereotype.Service;
 
 @Service
+
 public class CustomUserDetailsService implements UserDetailsManager {
+
     @Autowired
     private UserRepository userRepository;
 
@@ -20,15 +25,18 @@ public class CustomUserDetailsService implements UserDetailsManager {
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return user;
+        return (UserDetails) user;
     }
+
 //    @Override
-//    public void createUser(UserDetails userData) {
-//        var user = new User();
-//        user.setEmail(userData.getUsername());
-//        var hashedPassword = passwordEncoder.encode(userData.getPassword());
-//        user.setPasswordDigest(hashedPassword);
-//        userRepository.save(user);
+//    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
+//        return userRepository.findByEmail(email)
+//                .map(user -> new org.springframework.security.core.userdetails.User(
+//                        user.getEmail(),
+//                        user.getPassword(),
+//                        DEFAULT_AUTHORITIES
+//                ))
+//                .orElseThrow(() -> new UsernameNotFoundException("Not found user with 'username': " + email));
 //    }
     @Override
     public void createUser(UserDetails userData) {

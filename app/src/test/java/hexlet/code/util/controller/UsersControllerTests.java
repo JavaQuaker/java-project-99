@@ -5,6 +5,7 @@ import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
 import hexlet.code.mapper.UserMapper;
+
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
@@ -15,9 +16,12 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 
 import org.springframework.http.MediaType;
+import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors;
 import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -46,7 +50,11 @@ public class UsersControllerTests {
     private UserMapper mapper;
     @Autowired
     private ObjectMapper om;
-    private JwtRequestPostProcessor token;
+
+
+
+//    private JwtRequestPostProcessor token;
+private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
 
 
 
@@ -77,6 +85,7 @@ public class UsersControllerTests {
         Assertions.assertThat(user.getFirstName()).isEqualTo(testUser.getFirstName());
         Assertions.assertThat(user.getEmail()).isEqualTo(testUser.getEmail());
     }
+
     @Test
     public void testUpdateUser() throws Exception {
         userRepository.save(testUser);
@@ -90,6 +99,7 @@ public class UsersControllerTests {
                 .andExpect(status().isOk());
         testUser = userRepository.findById(testUser.getId()).get();
         assertThat(testUser.getFirstName()).isEqualTo("Nick");
+
 
     }
     @Test
