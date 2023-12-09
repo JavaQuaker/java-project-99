@@ -9,6 +9,7 @@ import hexlet.code.mapper.UserMapper;
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,8 @@ public class UsersControllerTests {
     private UserMapper mapper;
     @Autowired
     private ObjectMapper om;
+    @Autowired
+    private Faker faker;
 
 
 
@@ -65,6 +68,7 @@ private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
         userRepository.save(testUser);
     }
 
+
     @Test
     public void testIndex() throws Exception {
         mockMvc.perform(get("/users").with(jwt()))
@@ -72,10 +76,16 @@ private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
     }
     @Test
     public void testCreateUser() throws Exception {
-//        UserDTO dto = mapper.map(testUser);
+
+        Map<String, String> data = Map.of(
+                "email", faker.internet().emailAddress(),
+                "firstName", faker.name().firstName(),
+                "lastName", faker.name().lastName(),
+                "password", faker.internet().password(3, 100)
+        );
         var request = post("/users").with(token)
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(testUser));
+                .content(om.writeValueAsString(data));
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
 

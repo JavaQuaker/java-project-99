@@ -21,23 +21,15 @@ public class CustomUserDetailsService implements UserDetailsManager {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private UserMapper userMapper;
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         var user = userRepository.findByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User not found"));
-        return (UserDetails) user;
-    }
 
-//    @Override
-//    public UserDetails loadUserByUsername(final String email) throws UsernameNotFoundException {
-//        return userRepository.findByEmail(email)
-//                .map(user -> new org.springframework.security.core.userdetails.User(
-//                        user.getEmail(),
-//                        user.getPassword(),
-//                        DEFAULT_AUTHORITIES
-//                ))
-//                .orElseThrow(() -> new UsernameNotFoundException("Not found user with 'username': " + email));
-//    }
+        return user;
+    }
     @Override
     public void createUser(UserDetails userData) {
         throw new UnsupportedOperationException("Unimplemented method 'createUser'");

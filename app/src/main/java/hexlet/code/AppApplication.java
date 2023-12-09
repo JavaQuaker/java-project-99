@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @EnableJpaAuditing
 @SpringBootApplication
-//@PropertySource(value = "classpath:/config/application.yml")
+
 public class AppApplication {
     public static void main(String[] args) {
         SpringApplication.run(AppApplication.class, args);

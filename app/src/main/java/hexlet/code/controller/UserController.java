@@ -6,6 +6,7 @@ import hexlet.code.dto.UserUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.repository.UserRepository;
+//import hexlet.code.service.UserDetailsServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -29,6 +30,7 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
+
 
     @GetMapping(path = "")
     public List<UserDTO> index() {

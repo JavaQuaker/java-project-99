@@ -11,6 +11,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.stereotype.Component;
 
+
 @Component
 @AllArgsConstructor
 public class DataInitializer implements ApplicationRunner {
@@ -22,11 +23,13 @@ public class DataInitializer implements ApplicationRunner {
     private final UserRepository userRepository;
     @Override
     public void run(ApplicationArguments args) throws Exception {
-        var userData = new UserCreateDTO();
+        UserCreateDTO userData = new UserCreateDTO();
         userData.setFirstName("hexlet");
-        userData.setEmail("hexlet@example@com");
-        userData.setPassword("123");
-        var user = userMapper.map(userData);
+        userData.setEmail("hexlet@example.com");
+        userData.setPassword("qwerty");
+        User user = userMapper.map(userData);
         userRepository.save(user);
+
+
     }
 }

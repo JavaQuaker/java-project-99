@@ -26,107 +26,106 @@ import static jakarta.persistence.GenerationType.AUTO;
 import static jakarta.persistence.GenerationType.IDENTITY;
 import static jakarta.persistence.TemporalType.TIMESTAMP;
 
+@Entity
+@Table(name = "users")
+@EntityListeners(AuditingEntityListener.class)
+@Getter
+@Setter
+//@EqualsAndHashCode(onlyExplicitlyIncluded = true)
+public class User implements BaseEntity, UserDetails {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private long id;
+
+    private String firstName;
+
+    private String lastName;
+
+    @Email
+    @Column(unique = true)
+    private String email;
+
+
+    @Size(min = 3)
+    @NotBlank
+    private String password;
+
+    @CreatedDate
+    private LocalDate createdAt;
+    @LastModifiedDate
+    private LocalDate updateAt;
+
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return new ArrayList<GrantedAuthority>();
+    }
+    @Override
+    public String getPassword() {
+        return password;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
+
+    @Override
+    public boolean isAccountNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isCredentialsNonExpired() {
+        return true;
+    }
+
+    @Override
+    public boolean isEnabled() {
+        return true;
+    }
+}
 //@Entity
-//@Table(name = "users")
-//@EntityListeners(AuditingEntityListener.class)
 //@Getter
 //@Setter
-////@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-//public class User implements BaseEntity, UserDetails {
+//@Table(name = "users")
+//
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class User {
+//
 //    @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GeneratedValue(strategy = AUTO)
 //    private Long id;
-//
-//    private String firstName;
-//
-//    private String lastName;
-//
-//    @Email
 //
 //    @Column(unique = true)
 //    private String email;
 //
+//    @NotBlank
+//    private String firstName;
 //
-//    @Size(min = 3)
-//    @NotNull
-//    private String passwordDigest;
+//    @NotBlank
+//    private String lastName;
 //
-//    @CreatedDate
-//    private LocalDate createdAt;
-//    @LastModifiedDate
-//    private LocalDate updateAt;
+//    @NotBlank
+//    @Size(min = 3, max = 100)
+//    @JsonIgnore
+//    private String password;
 //
-//    @Override
-//    public Collection<? extends GrantedAuthority> getAuthorities() {
-//        return new ArrayList<GrantedAuthority>();
-//    }
-//    @Override
-//    public String getPassword() {
-//        return passwordDigest;
-//    }
+//    @CreationTimestamp
+//    @Temporal(TIMESTAMP)
+//    private Date createdAt;
 //
-//    @Override
-//    public String getUsername() {
-//        return email;
-//    }
+//    @CreationTimestamp
+//    @Temporal(TIMESTAMP)
+//    @JsonIgnore
+//    private Date updatedAt;
 //
-//    @Override
-//    public boolean isAccountNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isAccountNonLocked() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isCredentialsNonExpired() {
-//        return true;
-//    }
-//
-//    @Override
-//    public boolean isEnabled() {
-//        return true;
+//    public User(final Long id) {
+//        this.id = id;
 //    }
 //}
-@Entity
-@Getter
-@Setter
-@Table(name = "users")
-
-@NoArgsConstructor
-@AllArgsConstructor
-public class User {
-
-    @Id
-    @GeneratedValue(strategy = AUTO)
-    private Long id;
-
-    @Column(unique = true)
-    private String email;
-
-    @NotBlank
-    private String firstName;
-
-    @NotBlank
-    private String lastName;
-
-    @NotBlank
-    @Size(min = 3, max = 100)
-    @JsonIgnore
-    private String password;
-
-    @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    private Date createdAt;
-
-    @CreationTimestamp
-    @Temporal(TIMESTAMP)
-    @JsonIgnore
-    private Date updatedAt;
-
-    public User(final Long id) {
-        this.id = id;
-    }
-}
