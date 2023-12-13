@@ -1,6 +1,6 @@
 package hexlet.code.util.controller;
 
-import hexlet.code.dto.UserDTO;
+
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
@@ -9,7 +9,7 @@ import hexlet.code.mapper.UserMapper;
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
-import org.junit.jupiter.api.AfterEach;
+
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor;
+
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
@@ -57,7 +57,7 @@ public class UsersControllerTests {
 
 
 //    private JwtRequestPostProcessor token;
-private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
+    private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
 
 
 
@@ -71,7 +71,7 @@ private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
 
     @Test
     public void testIndex() throws Exception {
-        mockMvc.perform(get("/users").with(jwt()))
+        mockMvc.perform(get("/api/users").with(jwt()))
                 .andExpect(status().isOk());
     }
     @Test
@@ -83,7 +83,7 @@ private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
                 "lastName", faker.name().lastName(),
                 "password", faker.internet().password(3, 100)
         );
-        var request = post("/users").with(token)
+        var request = post("/api/users").with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
         mockMvc.perform(request)
@@ -102,7 +102,7 @@ private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
         var data = new HashMap<>();
         data.put("firstName", "Nick");
 
-        var request = put("/users/{id}", testUser.getId()).with(token)
+        var request = put("/api/users/{id}", testUser.getId()).with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));
         mockMvc.perform(request)
@@ -115,7 +115,7 @@ private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
     @Test
     public void testShowUser() throws Exception {
         userRepository.save(testUser);
-        MockHttpServletRequestBuilder request = get("/users/{id}", testUser.getId()).with(token);
+        MockHttpServletRequestBuilder request = get("/api/users/{id}", testUser.getId()).with(token);
         var result = mockMvc.perform(request)
                 .andExpect(status().isOk())
                 .andReturn();
@@ -129,7 +129,7 @@ private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
     @Test
     public void testDeleteUser() throws Exception {
         userRepository.save(testUser);
-        var request = delete("/users/{id}", testUser.getId()).with(token);
+        var request = delete("/api/users/{id}", testUser.getId()).with(token);
         mockMvc.perform(request)
                .andExpect(status().isOk());
         assertThat(userRepository.existsById(testUser.getId())).isFalse();

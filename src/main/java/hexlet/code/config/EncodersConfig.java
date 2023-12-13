@@ -24,7 +24,7 @@ public class EncodersConfig {
     private RsaKeyProperties rsaKeys;
     @Bean
     public PasswordEncoder passwordEncoder() {
-       return new BCryptPasswordEncoder();
+        return new BCryptPasswordEncoder();
     }
     @Bean
     JwtEncoder jwtEncoder() {

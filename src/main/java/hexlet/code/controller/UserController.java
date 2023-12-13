@@ -5,26 +5,20 @@ import hexlet.code.dto.UserDTO;
 import hexlet.code.dto.UserUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
+import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
 //import hexlet.code.service.UserDetailsServiceImpl;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ResponseStatus;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
 
 @RestController
-@RequestMapping("/users")
+@RequestMapping("/api/users")
 public class UserController {
     @Autowired
     private UserRepository userRepository;
@@ -32,12 +26,17 @@ public class UserController {
     private UserMapper userMapper;
 
 
+
     @GetMapping(path = "")
-    public List<UserDTO> index() {
-        var result = userRepository.findAll();
-        return result.stream().map(v -> userMapper.map(v))
-                .toList();
-    }
+    @ResponseStatus(HttpStatus.OK)
+    public ResponseEntity<List<User>> index() {
+       var users = userRepository.findAll();
+           return ResponseEntity.ok()
+                .header("X-Total-Count", String.valueOf(users.size()))
+                .body(users);
+}
+
+
     @GetMapping(path = "/{id}")
     public UserDTO show(@PathVariable long id) {
         var user = userRepository.findById(id)
