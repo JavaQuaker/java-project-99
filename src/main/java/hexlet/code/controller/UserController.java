@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.http.ResponseEntity;
 
+
 import java.util.List;
 
 
@@ -36,12 +37,16 @@ public class UserController {
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<User>> index() {
-        var users = userRepository.findAll();
-        return ResponseEntity.ok()
+    public ResponseEntity<List<UserDTO>> index() {
+        List<User> users = userRepository.findAll();
+        List<UserDTO> result = users.stream()
+                .map(userMapper::map)
+                .toList();
+         return ResponseEntity.ok()
                 .header("X-Total-Count", String.valueOf(users.size()))
-                .body(users);
+                .body(result);
     }
+
 
 
     @GetMapping(path = "/{id}")
