@@ -1,5 +1,6 @@
 package hexlet.code.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 
@@ -44,7 +45,6 @@ public class User implements BaseEntity, UserDetails {
     @Column(unique = true)
     private String email;
 
-
     @Size(min = 3)
     @NotBlank
     private String password;
@@ -54,7 +54,7 @@ public class User implements BaseEntity, UserDetails {
     @LastModifiedDate
     private LocalDate updateAt;
 
-    @OneToMany(mappedBy = "assignee", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "assignee", orphanRemoval = true, cascade = CascadeType.MERGE)
     private List<Task> tasks = new ArrayList<>();
 
     @Override

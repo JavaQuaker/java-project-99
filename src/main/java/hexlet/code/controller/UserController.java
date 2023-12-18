@@ -47,8 +47,6 @@ public class UserController {
                 .body(result);
     }
 
-
-
     @GetMapping(path = "/{id}")
     public UserDTO show(@PathVariable long id) {
         var user = userRepository.findById(id)

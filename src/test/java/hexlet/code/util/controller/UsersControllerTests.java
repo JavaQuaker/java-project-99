@@ -1,7 +1,10 @@
 package hexlet.code.util.controller;
 
 
+import hexlet.code.mapper.TaskMapper;
+import hexlet.code.model.Task;
 import hexlet.code.model.User;
+import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
 import hexlet.code.mapper.UserMapper;
@@ -10,6 +13,7 @@ import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,11 +48,16 @@ public class UsersControllerTests {
     private MockMvc mockMvc;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private TaskRepository taskRepository;
     private User testUser;
+    private Task testTask;
     @Autowired
     private ModelGenerator modelGenerator;
     @Autowired
     private UserMapper mapper;
+    @Autowired
+    private TaskMapper taskMapper;
     @Autowired
     private ObjectMapper om;
     @Autowired
@@ -65,8 +74,15 @@ public class UsersControllerTests {
     public void setUp() {
         token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
         testUser = Instancio.of(modelGenerator.getUserModel()).create();
+        System.out.println("testUser.getId() = " + testUser.getId());
+        System.out.println("testUser.getEmail() = " + testUser.getEmail());
+        System.out.println("testUser.getFirstName() = " + testUser.getFirstName());
+        System.out.println("testUser.getLastName() = " + testUser.getLastName());
+        System.out.println("testUser.getPassword() = " + testUser.getPassword());
         userRepository.save(testUser);
+
     }
+
 
 
     @Test
@@ -98,7 +114,7 @@ public class UsersControllerTests {
 
     @Test
     public void testUpdateUser() throws Exception {
-        userRepository.save(testUser);
+//        userRepository.save(testUser);
         var data = new HashMap<>();
         data.put("firstName", "Nick");
 
@@ -114,7 +130,7 @@ public class UsersControllerTests {
     }
     @Test
     public void testShowUser() throws Exception {
-        userRepository.save(testUser);
+//        userRepository.save(testUser);
         MockHttpServletRequestBuilder request = get("/api/users/{id}", testUser.getId()).with(token);
         var result = mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -128,7 +144,7 @@ public class UsersControllerTests {
     }
     @Test
     public void testDeleteUser() throws Exception {
-        userRepository.save(testUser);
+//        userRepository.save(testUser);
         var request = delete("/api/users/{id}", testUser.getId()).with(token);
         mockMvc.perform(request)
                .andExpect(status().isOk());

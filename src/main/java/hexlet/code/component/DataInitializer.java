@@ -1,11 +1,15 @@
 package hexlet.code.component;
 
+import hexlet.code.dto.LabelCreateDTO;
 import hexlet.code.dto.TaskStatusCreateDTO;
 import hexlet.code.dto.UserCreateDTO;
+import hexlet.code.mapper.LabelMapper;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.mapper.UserMapper;
+import hexlet.code.model.Label;
 import hexlet.code.model.TaskStatus;
 import hexlet.code.model.User;
+import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.service.CustomUserDetailsService;
@@ -31,10 +35,15 @@ public class DataInitializer implements ApplicationRunner {
     private final TaskStatusRepository taskStatusRepository;
     @Autowired
     private final TaskStatusMapper taskStatusMapper;
+    @Autowired
+    private final LabelRepository labelRepository;
+    @Autowired
+    private final LabelMapper labelMapper;
     @Override
     public void run(ApplicationArguments args) throws Exception {
         defaultUser();
         defaultTaskStatus();
+        defaultLabels();
 
     }
     public void defaultUser() {
@@ -72,5 +81,22 @@ public class DataInitializer implements ApplicationRunner {
         TaskStatus taskStatus4 = taskStatusMapper.map(taskStatusData);
         taskStatusRepository.save(taskStatus4);
 
+    }
+    public void defaultLabels() {
+//        LabelCreateDTO labelCreateDTO = new LabelCreateDTO();
+//        labelCreateDTO.setName("feature");
+//        Label labelFeature = labelMapper.map(labelCreateDTO);
+//        labelRepository.save(labelFeature);
+//
+//        labelCreateDTO.setName("bug");
+//        Label labelBug = labelMapper.map(labelCreateDTO);
+//        labelRepository.save(labelBug);
+        List<String> defLabels = List.of("feature", "bug");
+        defLabels.forEach(name -> {
+            LabelCreateDTO labelCreateDTO = new LabelCreateDTO();
+            labelCreateDTO.setName(name);
+            Label label = labelMapper.map(labelCreateDTO);
+            labelRepository.save(label);
+        });
     }
 }
