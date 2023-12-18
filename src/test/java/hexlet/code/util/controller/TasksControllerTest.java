@@ -99,7 +99,7 @@ public class TasksControllerTest {
                 "index", (Integer) faker.number().positive(),
                 "assignee_id", faker.number().positive(),
                 "description", faker.lorem().paragraph(),
-                "status", faker.lorem().word()
+                "taskStatus", faker.lorem().word()
         );
         var request = post("/api/tasks").with(token)
                 .contentType(MediaType.APPLICATION_JSON)

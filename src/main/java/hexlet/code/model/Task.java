@@ -44,7 +44,8 @@ public class Task implements BaseEntity {
     @CreatedDate
     private LocalDate createdAt;
 
-    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.ALL})
+//    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.ALL})
+    @ManyToMany(fetch = FetchType.LAZY)
     @NotNull
     private Set<Label> labels = new HashSet<>();
 }
