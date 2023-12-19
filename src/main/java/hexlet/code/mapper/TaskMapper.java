@@ -3,8 +3,10 @@ package hexlet.code.mapper;
 import hexlet.code.dto.TaskDTO;
 import hexlet.code.dto.TaskCreateDTO;
 import hexlet.code.dto.TaskUpdateDTO;
+import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 
+import hexlet.code.repository.LabelRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -13,6 +15,10 @@ import org.mapstruct.ReportingPolicy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
+
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Mapper(
         uses = {JsonNullableMapper.class, ReferenceMapper.class},
@@ -23,6 +29,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 public abstract class TaskMapper {
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private LabelRepository labelRepository;
     @Mapping(target = "assigneeId", source = "assignee.id")
     @Mapping(target = "taskStatus", source = "taskStatus.slug")
     public abstract TaskDTO map(Task model);

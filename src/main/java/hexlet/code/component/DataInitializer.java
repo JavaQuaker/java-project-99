@@ -83,14 +83,6 @@ public class DataInitializer implements ApplicationRunner {
 
     }
     public void defaultLabels() {
-//        LabelCreateDTO labelCreateDTO = new LabelCreateDTO();
-//        labelCreateDTO.setName("feature");
-//        Label labelFeature = labelMapper.map(labelCreateDTO);
-//        labelRepository.save(labelFeature);
-//
-//        labelCreateDTO.setName("bug");
-//        Label labelBug = labelMapper.map(labelCreateDTO);
-//        labelRepository.save(labelBug);
         List<String> defLabels = List.of("feature", "bug");
         defLabels.forEach(name -> {
             LabelCreateDTO labelCreateDTO = new LabelCreateDTO();

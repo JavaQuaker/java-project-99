@@ -1,5 +1,8 @@
 package hexlet.code.model;
 
+import hexlet.code.dto.TaskCreateDTO;
+import hexlet.code.dto.TaskStatusCreateDTO;
+import hexlet.code.dto.TaskStatusDTO;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -34,18 +37,20 @@ public class Task implements BaseEntity {
     private String description;
 
     @NotNull
+//    @ManyToOne(cascade = CascadeType.MERGE)
     @ManyToOne
     private TaskStatus taskStatus;
 
 
     @ManyToOne(fetch = FetchType.EAGER)
+//    @ManyToOne(cascade = CascadeType.MERGE)
     private User assignee;
 
     @CreatedDate
     private LocalDate createdAt;
 
-//    @ManyToMany(cascade = {CascadeType.MERGE, CascadeType.ALL})
-    @ManyToMany(fetch = FetchType.LAZY)
+//    @ManyToMany(cascade = CascadeType.MERGE)
+    @ManyToMany(fetch = FetchType.EAGER)
     @NotNull
     private Set<Label> labels = new HashSet<>();
 }

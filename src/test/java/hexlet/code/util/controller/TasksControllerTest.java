@@ -26,6 +26,7 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.util.Assert;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -65,13 +66,13 @@ public class TasksControllerTest {
     public void setUp() {
         token = jwt().jwt(builder -> builder.subject("hexlet@example.com"));
         var user = userRepository.findByEmail("hexlet@example.com")
-                .orElseThrow(() -> new ResourceNotFoundException("User doesn't exist"));
+                .orElseThrow(() -> new RuntimeException("User doesn't exist"));
 
         var taskStatus = taskStatusRepository.findBySlug("draft")
-                .orElseThrow(() -> new ResourceNotFoundException("taskStatus not found"));
+                .orElseThrow(() -> new RuntimeException("taskStatus not found"));
 
        var label = labelRepository.findByName("feature")
-               .orElseThrow(() -> new ResourceNotFoundException("label not found"));
+               .orElseThrow(() -> new RuntimeException("label not found"));
 
        testTask = Instancio.of(modelGenerator.getTaskModel()).create();
 
@@ -95,12 +96,20 @@ public class TasksControllerTest {
     public void testCreateTask() throws Exception {
         clear();
         var data = Map.of(
-                "name", faker.name().name(),
-                "index", (Integer) faker.number().positive(),
-                "assignee_id", faker.number().positive(),
-                "description", faker.lorem().paragraph(),
-                "taskStatus", faker.lorem().word()
+                "name", faker.lorem().word(),
+                "index", (Integer)faker.number().positive(),
+                "assignee_id", 1,
+                "description", faker.lorem().sentence(),
+                "taskStatus", "draft"
         );
+//        var data = Map.of(
+//                "name", faker.name().name(),
+//                "index", (Integer) faker.number().positive(),
+//                "assignee_id", 1L,
+//                "description", faker.lorem().sentence(),
+//                "taskStatus", "draft",
+//                "label", "feature"
+//        );
         var request = post("/api/tasks").with(token)
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(om.writeValueAsString(data));

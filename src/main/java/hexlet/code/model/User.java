@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 
 import jakarta.validation.constraints.Size;
+import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.Getter;
 
@@ -31,7 +32,7 @@ import java.util.List;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
-
+@EqualsAndHashCode(of = {"id"})
 public class User implements BaseEntity, UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -54,8 +55,11 @@ public class User implements BaseEntity, UserDetails {
     @LastModifiedDate
     private LocalDate updateAt;
 
-    @OneToMany(mappedBy = "assignee", orphanRemoval = true, cascade = CascadeType.MERGE)
+    @OneToMany(mappedBy = "assignee", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
+//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignee", cascade = CascadeType.ALL)
     private List<Task> tasks = new ArrayList<>();
+
+
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
