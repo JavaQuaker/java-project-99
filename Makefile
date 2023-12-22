@@ -46,7 +46,7 @@
 #    git subtree push --prefix code heroku main
 setup:
 	npm install
-	./gradlew wrapper --gradle-version 8.5
+	./gradlew wrapper --gradle-version 8.4
 	./gradlew build
 
 frontend:
