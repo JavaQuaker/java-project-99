@@ -45,7 +45,15 @@
 #deploy:
 #    git subtree push --prefix code heroku main
 setup:
-	./gradlew wrapper --gradle-version 8.4
+	npm install
+	./gradlew wrapper --gradle-version 8.5
+	./gradlew build
+
+frontend:
+	make -C frontend start
+
+backend:
+	./gradlew bootRun --args='--spring.profiles.active=dev'
 
 clean:
 	./gradlew clean
@@ -53,8 +61,11 @@ clean:
 build:
 	./gradlew clean build
 
-start:
-	./gradlew bootRun --args='--spring.profiles.active=dev'
+dev:
+	heroku local
+
+reload-classes:
+	./gradlew -t classes
 
 start-prod:
 	./gradlew bootRun --args='--spring.profiles.active=prod'
@@ -62,8 +73,8 @@ start-prod:
 install:
 	./gradlew installDist
 
-start-dist:
-	./build/install/app/bin/app
+# start-dist:
+# 	./build/install/app/bin/app
 
 lint:
 	./gradlew checkstyleMain checkstyleTest
@@ -71,16 +82,20 @@ lint:
 test:
 	./gradlew test
 
-report:
-	./gradlew jacocoTestReport
+# report:
+# 	./gradlew jacocoTestReport
 
-check-updates:
-	./gradlew dependencyUpdates
+update-js-deps:
+	npx ncu -u
 
-generate-migrations:
-	./gradlew diffChangeLog
+check-java-deps:
+	./gradlew dependencyUpdates -Drevision=release
 
-db-migrate:
-	./gradlew update
+# generate-migrations:
+# 	gradle diffChangeLog
 
-.PHONY: build
+# db-migrate:
+# 	./gradlew update
+
+
+.PHONY: build frontend
