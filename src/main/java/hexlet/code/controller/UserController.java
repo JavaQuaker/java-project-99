@@ -42,7 +42,7 @@ public class UserController {
         List<UserDTO> result = users.stream()
                 .map(userMapper::map)
                 .toList();
-         return ResponseEntity.ok()
+        return ResponseEntity.ok()
                 .header("X-Total-Count", String.valueOf(users.size()))
                 .body(result);
     }

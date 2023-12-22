@@ -1,9 +1,15 @@
 package hexlet.code.mapper;
 
-import hexlet.code.dto.*;
+import hexlet.code.dto.LabelDTO;
+import hexlet.code.dto.LabelCreateDTO;
+import hexlet.code.dto.LabelUpdateDTO;
 import hexlet.code.model.Label;
-import hexlet.code.model.User;
-import org.mapstruct.*;
+
+import org.mapstruct.Mapper;
+import org.mapstruct.NullValuePropertyMappingStrategy;
+import org.mapstruct.MappingConstants;
+import org.mapstruct.ReportingPolicy;
+import org.mapstruct.MappingTarget;
 
 @Mapper(
         uses = { JsonNullableMapper.class, ReferenceMapper.class },

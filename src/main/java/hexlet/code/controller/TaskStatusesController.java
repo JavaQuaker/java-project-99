@@ -1,6 +1,8 @@
 package hexlet.code.controller;
 
-import hexlet.code.dto.*;
+import hexlet.code.dto.TaskStatusDTO;
+import hexlet.code.dto.TaskStatusCreateDTO;
+import hexlet.code.dto.TaskStatusUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskStatusMapper;
 import hexlet.code.model.TaskStatus;
@@ -9,7 +11,15 @@ import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
 import java.util.List;
 
@@ -52,8 +62,8 @@ public class TaskStatusesController {
                 .orElseThrow(() -> new ResourceNotFoundException("TaskStatus with id" + " " +  id + " " + "not found"));
         taskStatusMapper.update(taskStatusData, taskStatus);
         taskStatusRepository.save(taskStatus);
-        var TaskStatusDTO = taskStatusMapper.map(taskStatus);
-        return TaskStatusDTO;
+        var taskStatusDTO = taskStatusMapper.map(taskStatus);
+        return taskStatusDTO;
 
     }
     @DeleteMapping(path = "/{id}")

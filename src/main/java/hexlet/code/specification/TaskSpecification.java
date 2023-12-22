@@ -1,6 +1,5 @@
 package hexlet.code.specification;
 
-import hexlet.code.dto.TaskStatusDTO;
 import hexlet.code.model.Task;
 import hexlet.code.model.TaskStatus;
 import org.springframework.data.jpa.domain.Specification;

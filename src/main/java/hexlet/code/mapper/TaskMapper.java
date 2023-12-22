@@ -5,8 +5,8 @@ import hexlet.code.dto.TaskCreateDTO;
 import hexlet.code.dto.TaskUpdateDTO;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
-
 import hexlet.code.repository.LabelRepository;
+import hexlet.code.repository.TaskStatusRepository;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
@@ -31,14 +31,29 @@ public abstract class TaskMapper {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private LabelRepository labelRepository;
+    @Autowired
+    private TaskStatusRepository taskStatusRepository;
     @Mapping(target = "assigneeId", source = "assignee.id")
-    @Mapping(target = "taskStatus", source = "taskStatus.slug")
+    @Mapping(target = "status", source = "taskStatus.slug")
+    @Mapping(target = "title", source = "name")
+    @Mapping(target = "content", source = "description")
     public abstract TaskDTO map(Task model);
     @Mapping(target = "assignee", source = "assigneeId")
-    @Mapping(target = "taskStatus.slug", source = "taskStatus")
+    @Mapping(target = "taskStatus.slug", source = "status")
+    @Mapping(target = "labels", source = "taskLabelIds")
+    @Mapping(target = "name", source = "title")
+    @Mapping(target = "description", source = "content")
     public abstract Task map(TaskCreateDTO dto);
     @Mapping(target = "assignee", source = "assigneeId")
-    @Mapping(target = "taskStatus.slug", source = "taskStatus")
+    @Mapping(target = "taskStatus.slug", source = "status")
+    @Mapping(target = "labels", source = "taskLabelIds")
+    @Mapping(target = "name", source = "title")
+    @Mapping(target = "description", source = "content")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
+
+    public Set<Label> toLabelsSet(List<Long> taskLabelIds) {
+        return new HashSet<>(labelRepository.findByIdIn(taskLabelIds).orElse(new HashSet<>()));
+    }
+
 
 }

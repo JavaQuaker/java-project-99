@@ -1,17 +1,24 @@
 package hexlet.code.model;
 
-import hexlet.code.dto.TaskCreateDTO;
-import hexlet.code.dto.TaskStatusCreateDTO;
-import hexlet.code.dto.TaskStatusDTO;
-import jakarta.persistence.*;
+import jakarta.persistence.Entity;
+import jakarta.persistence.Table;
+import jakarta.persistence.Id;
+import jakarta.persistence.EntityListeners;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Column;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.ManyToMany;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.AllArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
-
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
@@ -21,6 +28,8 @@ import java.util.Set;
 @EntityListeners(AuditingEntityListener.class)
 @Getter
 @Setter
+@AllArgsConstructor
+@NoArgsConstructor
 public class Task implements BaseEntity {
 
     @Id
@@ -38,13 +47,16 @@ public class Task implements BaseEntity {
 
     @NotNull
 //    @ManyToOne(cascade = CascadeType.MERGE)
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     private TaskStatus taskStatus;
 
 
+
     @ManyToOne(fetch = FetchType.EAGER)
-//    @ManyToOne(cascade = CascadeType.MERGE)
+    @NotNull
     private User assignee;
+//    @ManyToOne(cascade = CascadeType.MERGE)
+
 
     @CreatedDate
     private LocalDate createdAt;
@@ -54,3 +66,44 @@ public class Task implements BaseEntity {
     @NotNull
     private Set<Label> labels = new HashSet<>();
 }
+//@Entity
+//@Getter
+//@Setter
+//@Table(name = "tasks")
+//@Builder
+//@NoArgsConstructor
+//@AllArgsConstructor
+//public class Task {
+//
+//    @Id
+//    @GeneratedValue(strategy = AUTO)
+//    private Long id;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "author", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+//    private User author;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "assignee", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+//    private User assignee;
+//
+//    @ManyToOne
+//    @JoinColumn(name = "taskStatus", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
+//    private TaskStatus taskStatus;
+//
+//    @ManyToMany
+//    @Fetch(JOIN)
+//    private Set<Label> labels;
+//
+//    @NotBlank
+//    @Size(min = 3, max = 1000)
+//    private String name;
+//
+//    private String description;
+//
+//    private int index;
+//
+//    @CreationTimestamp
+//    @Temporal(TIMESTAMP)
+//    private Date createdAt;
+//}

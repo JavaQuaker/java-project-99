@@ -1,7 +1,6 @@
 package hexlet.code.util.controller;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import hexlet.code.dto.LabelCreateDTO;
 import hexlet.code.mapper.LabelMapper;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.mapper.UserMapper;
@@ -10,7 +9,6 @@ import hexlet.code.model.Task;
 import hexlet.code.model.User;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskRepository;
-import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
@@ -31,7 +29,10 @@ import java.util.Map;
 import static net.javacrumbs.jsonunit.assertj.JsonAssertions.assertThatJson;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.springframework.security.test.web.servlet.request.SecurityMockMvcRequestPostProcessors.jwt;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
@@ -70,70 +71,69 @@ public class LabelsControllerTest {
         labelRepository.deleteById(testLabels.getId());
     }
 
-        @Test
+    @Test
         public void testIndex() throws Exception {
-            mockMvc.perform(get("/api/labels").with(jwt()))
+        mockMvc.perform(get("/api/labels").with(jwt()))
                     .andExpect(status().isOk());
-        }
-        @Test
-        public void testCreateLabel() throws Exception {
+    }
+    @Test
+    public void testCreateLabel() throws Exception {
 
-            Map<String, String> data = Map.of(
+        Map<String, String> data = Map.of(
 
-                    "name", faker.name().name()
-            );
-            var request = post("/api/labels").with(token)
+                "name", faker.name().name()
+         );
+        var request = post("/api/labels").with(token)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsString(data));
-            mockMvc.perform(request)
+        mockMvc.perform(request)
                     .andExpect(status().isCreated());
 
-            var labels = labelRepository.findByName(testLabels.getName()).get();
+        var labels = labelRepository.findByName(testLabels.getName()).get();
 
-            Assertions.assertThat(labels).isNotNull();
-            Assertions.assertThat(labels.getName()).isEqualTo(testLabels.getName());
+        Assertions.assertThat(labels).isNotNull();
+        Assertions.assertThat(labels.getName()).isEqualTo(testLabels.getName());
+    }
 
-        }
+    @Test
+    public void testUpdateLabel() throws Exception {
+        labelRepository.save(testLabels);
+        var data = new HashMap<>();
+        data.put("name", "Nick");
 
-        @Test
-        public void testUpdateLabel() throws Exception {
-            labelRepository.save(testLabels);
-            var data = new HashMap<>();
-            data.put("name", "Nick");
-
-            var request = put("/api/labels/{id}", testLabels.getId()).with(token)
+        var request = put("/api/labels/{id}", testLabels.getId()).with(token)
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(om.writeValueAsString(data));
-            mockMvc.perform(request)
+        mockMvc.perform(request)
                     .andExpect(status().isOk());
-            testLabels = labelRepository.findById(testLabels.getId()).get();
-            assertThat(testLabels.getName()).isEqualTo("Nick");
+        testLabels = labelRepository.findById(testLabels.getId()).get();
+        assertThat(testLabels.getName()).isEqualTo("Nick");
 
 
-        }
-        @Test
-        public void testShowLabel() throws Exception {
-            labelRepository.save(testLabels);
-            MockHttpServletRequestBuilder request = get("/api/labels/{id}", testLabels.getId()).with(token);
-            var result = mockMvc.perform(request)
+    }
+    @Test
+    public void testShowLabel() throws Exception {
+        labelRepository.save(testLabels);
+        MockHttpServletRequestBuilder request = get("/api/labels/{id}", testLabels.getId()).with(token);
+        var result = mockMvc.perform(request)
                     .andExpect(status().isOk())
                     .andReturn();
-            var body = result.getResponse().getContentAsString();
-            assertThatJson(body).and(
+        var body = result.getResponse().getContentAsString();
+        assertThatJson(body).and(
                     v -> v.node("name").isEqualTo(testLabels.getName())
 
-            );
+        );
 
-        }
-        @Test
-        public void testDeleteLabel() throws Exception {
-            labelRepository.save(testLabels);
-            var request = delete("/api/labels/{id}", testLabels.getId()).with(token);
-            mockMvc.perform(request)
-                    .andExpect(status().isOk());
-            assertThat(labelRepository.existsById(testLabels.getId())).isFalse();
-
-        }
     }
+    @Test
+    public void testDeleteLabel() throws Exception {
+        labelRepository.save(testLabels);
+        var request = delete("/api/labels/{id}", testLabels.getId()).with(token);
+        mockMvc.perform(request)
+                    .andExpect(status().isOk());
+        assertThat(labelRepository.existsById(testLabels.getId())).isFalse();
+
+    }
+}
 
 

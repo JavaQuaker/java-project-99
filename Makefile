@@ -26,7 +26,8 @@ compose-down:
     docker-compose down -v --remove-orphans
 
 setup:
-    cd code/app && ./gradlew clean build
+#    cd code/app && ./gradlew clean build
+    ./gradlew clean build
     gradle clean compileTest
 
 test:
