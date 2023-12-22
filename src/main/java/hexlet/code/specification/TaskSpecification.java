@@ -22,15 +22,15 @@ public class TaskSpecification {
                 assigneeId);
     }
     private Specification<Task> withTitleCont(String titleCont) {
-        return (root, query, cb) -> titleCont == null ? cb.conjunction() : cb.equal(root.get("titleCont").get("id"),
+        return (root, query, cb) -> titleCont == null ? cb.conjunction() : cb.like(root.get("name"),
                 titleCont);
     }
     private Specification<Task> withStatus(String status) {
-        return (root, query, cb) -> status == null ? cb.conjunction() : cb.equal(root.get("status").get("id"),
+        return (root, query, cb) -> status == null ? cb.conjunction() : cb.equal(root.get("taskStatus").get("slug"),
                 status);
     }
     private Specification<Task> withLabelId(String labelId) {
-        return (root, query, cb) -> labelId == null ? cb.conjunction() : cb.equal(root.get("labelId").get("id"),
+        return (root, query, cb) -> labelId == null ? cb.conjunction() : cb.equal(root.get("labels").get("id"),
                 labelId);
     }
 }

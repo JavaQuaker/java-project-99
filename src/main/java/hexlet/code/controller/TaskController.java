@@ -12,10 +12,12 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.specification.TaskSpecification;
+import io.swagger.v3.oas.annotations.Parameter;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -36,19 +38,41 @@ public class TaskController {
     private TaskMapper taskMapper;
     @Autowired
     private TaskStatusRepository taskStatusRepository;
+    @Autowired
+    private TaskSpecification taskSpecification;
+
+
+    public List<TaskDTO> find(TaskParamsDTO params, @RequestParam(defaultValue = "1") int page) {
+        Specification<Task> spec = taskSpecification.build(params);
+        Page<Task> tasks = taskRepository.findAll(spec, PageRequest.of(page - 1, 10));
+        Page<TaskDTO> result = tasks.map(taskMapper::map);
+        return result.toList();
+
+}
 
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
-    public ResponseEntity<List<TaskDTO>> index() {
-        List<Task> tasks = taskRepository.findAll();
-        List<TaskDTO> result = tasks.stream()
-                .map(taskMapper::map)
-                .toList();
-        return ResponseEntity.ok()
-                .header("X-Total-Count", String.valueOf(tasks.size()))
-                .body(result);
+    public ResponseEntity<List<TaskDTO>> index(TaskParamsDTO params) {
+            if (params != null) {
+                List<TaskDTO> tasks = find(params, 1);
+                System.out.println("tasks" + " " + tasks.toString());
+                return ResponseEntity.ok()
+                        .header("X-Total-Count", String.valueOf(tasks.size()))
+                        .body(tasks);
+
+            } else {
+                List<Task> tasks = taskRepository.findAll();
+                List<TaskDTO> result = tasks.stream()
+                        .map(taskMapper::map)
+                        .toList();
+                return ResponseEntity.ok()
+                        .header("X-Total-Count", String.valueOf(tasks.size()))
+                        .body(result);
+            }
     }
+
+
     @GetMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     public TaskDTO show(@PathVariable long id) {
@@ -79,38 +103,6 @@ public class TaskController {
         var taskDTO = taskMapper.map(task);
         return taskDTO;
     }
-
-//    @PostMapping("")
-//    @ResponseStatus(HttpStatus.CREATED)
-//    public TaskDTO create(@Valid @RequestBody TaskCreateDTO taskData) {
-//        var task = toEntity(taskData);
-//        taskRepository.save(task);
-//        var taskDTO = toDTO(task);
-//        return taskDTO;
-//    }
-
-//    private TaskDTO toDTO(Task task) {
-//        var dto = new TaskDTO();
-//        dto.setIndex(task.getIndex());
-//        dto.setDescription(task.getDescription());
-//        dto.setTaskStatus(task.getTaskStatus());
-//        dto.setAssigneeId(task.getAssignee().getId());
-//        dto.setCreatedAt(task.getCreatedAt());
-//        return dto;
-//    }
-//
-//    private Task toEntity(TaskCreateDTO taskDto) {
-//        var task = new Task();
-//        task.setAssignee(taskDto.getAssigneeId());
-//        task.setName(taskDto.getName());
-//        task.setDescription(taskDto.getDescription());
-//        task.setTaskStatus(taskDto.getTaskStatus());
-//        return task;
-//    }
-
-
-
-
 
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
