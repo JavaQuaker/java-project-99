@@ -12,7 +12,7 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.specification.TaskSpecification;
-import io.swagger.v3.oas.annotations.Parameter;
+
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +20,16 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.DeleteMapping;
 
 
 import java.util.List;
@@ -48,28 +57,28 @@ public class TaskController {
         Page<TaskDTO> result = tasks.map(taskMapper::map);
         return result.toList();
 
-}
+    }
 
 
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<TaskDTO>> index(TaskParamsDTO params) {
-            if (params != null) {
-                List<TaskDTO> tasks = find(params, 1);
-                System.out.println("tasks" + " " + tasks.toString());
-                return ResponseEntity.ok()
+        if (params != null) {
+            List<TaskDTO> tasks = find(params, 1);
+            System.out.println("tasks" + " " + tasks.toString());
+            return ResponseEntity.ok()
                         .header("X-Total-Count", String.valueOf(tasks.size()))
                         .body(tasks);
 
-            } else {
-                List<Task> tasks = taskRepository.findAll();
-                List<TaskDTO> result = tasks.stream()
+        } else {
+            List<Task> tasks = taskRepository.findAll();
+            List<TaskDTO> result = tasks.stream()
                         .map(taskMapper::map)
                         .toList();
-                return ResponseEntity.ok()
+            return ResponseEntity.ok()
                         .header("X-Total-Count", String.valueOf(tasks.size()))
                         .body(result);
-            }
+        }
     }
 
 

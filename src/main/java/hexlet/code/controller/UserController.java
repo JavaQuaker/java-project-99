@@ -23,6 +23,11 @@ import org.springframework.http.ResponseEntity;
 
 
 import java.util.List;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.Parameter;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 
 
 @RestController
@@ -34,7 +39,8 @@ public class UserController {
     private UserMapper userMapper;
 
 
-
+    @Operation(summary = "Get list of all users")
+    @ApiResponse(responseCode = "200", description = "list of all users")
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<UserDTO>> index() {
@@ -46,21 +52,39 @@ public class UserController {
                 .header("X-Total-Count", String.valueOf(users.size()))
                 .body(result);
     }
+    @Operation(summary = "Get specific user by his id")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User found"),
+        @ApiResponse(responseCode = "404", description = "user not found")
 
+    })
     @GetMapping(path = "/{id}")
-    public UserDTO show(@PathVariable long id) {
+    public UserDTO show(
+            @Parameter(description = "Id of user to be found")
+            @PathVariable long id) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id" + " " + id + " " + "not found"));
         return userMapper.map(user);
     }
+
+    @Operation(summary = "Create new user")
+    @ApiResponse(responseCode = "201", description = "User created")
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
-    public UserDTO create(@Valid @RequestBody UserCreateDTO userData) {
+    public UserDTO create(
+            @Parameter(description = "User data to save")
+            @Valid @RequestBody UserCreateDTO userData) {
         var user = userMapper.map(userData);
         userRepository.save(user);
         var userDTO = userMapper.map(user);
         return userDTO;
     }
+
+    @Operation(summary = "Update user by his id")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User update"),
+        @ApiResponse(responseCode = "404", description = "User with id not found")
+    })
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)
     UserDTO update(@RequestBody UserUpdateDTO userData, @PathVariable long id) {
@@ -72,8 +96,15 @@ public class UserController {
         return userDTO;
 
     }
+    @Operation(summary = "Delete user by his id")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "User deleted"),
+        @ApiResponse(responseCode = "404", description = "User with that id not found")
+    })
     @DeleteMapping(path = "/{id}")
-    public void delete(@PathVariable long id) {
+    public void delete(
+            @Parameter(description = "Id of user to be deleted")
+            @PathVariable long id) {
         var user = userRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("User with id" + " " +  id + " " + "not found"));
         userRepository.deleteById(id);
