@@ -16,8 +16,8 @@ start-prod:
 install:
 	./gradlew installDist
 
-#start-dist:
-#	./build/install/app/bin/app
+start-dist:
+	./build/install/app/bin/app
 
 lint:
 	./gradlew checkstyleMain checkstyleTest
@@ -34,10 +34,10 @@ check-updates:
 make api-doc:
 	gradle clean generateOpenApiDocs
 
-#generate-migrations:
-#	./gradlew diffChangeLog
-#
-#db-migrate:
-#	./gradlew update
+generate-migrations:
+	./gradlew diffChangeLog
+
+db-migrate:
+	./gradlew update
 
 .PHONY: build
