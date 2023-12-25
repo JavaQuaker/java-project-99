@@ -34,6 +34,6 @@ server:
 
 springdoc:
  swagger-ui:
-     path: /path
+     path: /swagger.html
 
 
