@@ -31,6 +31,9 @@ report:
 check-updates:
 	./gradlew dependencyUpdates
 
+make api-doc:
+	gradle clean generateOpenApiDocs
+
 #generate-migrations:
 #	./gradlew diffChangeLog
 #
