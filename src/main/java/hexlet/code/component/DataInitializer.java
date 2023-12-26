@@ -80,7 +80,6 @@ public class DataInitializer implements ApplicationRunner {
         taskStatusData.setSlug("published");
         TaskStatus taskStatus4 = taskStatusMapper.map(taskStatusData);
         taskStatusRepository.save(taskStatus4);
-
     }
     public void defaultLabels() {
         List<String> defLabels = List.of("feature", "bug");
