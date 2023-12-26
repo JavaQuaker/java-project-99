@@ -7,6 +7,8 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -27,9 +29,10 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
 
-
+@Tag(name = "User controller", description = "Interaction with users")
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
@@ -40,7 +43,9 @@ public class UserController {
 
 
     @Operation(summary = "Get list of all users")
-    @ApiResponse(responseCode = "200", description = "list of all users")
+    @ApiResponse(responseCode = "200", description = "List of all users",
+            content = { @Content(mediaType = "application/json",
+                    schema = @Schema(implementation = UserDTO.class)) })
     @GetMapping(path = "")
     @ResponseStatus(HttpStatus.OK)
     public ResponseEntity<List<UserDTO>> index() {
@@ -52,12 +57,10 @@ public class UserController {
                 .header("X-Total-Count", String.valueOf(users.size()))
                 .body(result);
     }
-    @Operation(summary = "Get specific user by his id")
-    @ApiResponses(value = {
-        @ApiResponse(responseCode = "200", description = "User found"),
-        @ApiResponse(responseCode = "404", description = "user not found")
 
-    })
+    @Operation(summary = "Get user by id")
+    @ApiResponse(responseCode = "200", description = "User found")
+    @ApiResponse(responseCode = "400", description = "User not found")
     @GetMapping(path = "/{id}")
     public UserDTO show(
             @Parameter(description = "Id of user to be found")
@@ -83,7 +86,7 @@ public class UserController {
     @Operation(summary = "Update user by his id")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "User update"),
-        @ApiResponse(responseCode = "404", description = "User with id not found")
+        @ApiResponse(responseCode = "404", description = "User with that id not found")
     })
     @PutMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.OK)

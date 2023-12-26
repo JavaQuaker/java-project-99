@@ -11,6 +11,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import io.swagger.v3.oas.annotations.Operation;
+
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.media.Content;
 
 @RestController
 //@RequestMapping("/login")
@@ -20,6 +25,11 @@ public class AuthenticationController {
     private JWTUtils jwtUtils;
     @Autowired
     private AuthenticationManager authenticationManager;
+    @Operation(summary = "Authenticates the user")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Successful authorization", content = @Content),
+        @ApiResponse(responseCode = "401", description = "Unauthorized", content = @Content)
+    })
     @PostMapping("/login")
     public String create(@RequestBody AuthRequest authRequest) {
         var authentication = new UsernamePasswordAuthenticationToken(
