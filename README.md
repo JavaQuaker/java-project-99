@@ -3,4 +3,4 @@
 <a href="https://codeclimate.com/github/JavaQuaker/java-project-99/maintainability"><img src="https://api.codeclimate.com/v1/badges/9f5cd3acdaf5efef4d2f/maintainability" /></a>
 <a href="https://codeclimate.com/github/JavaQuaker/java-project-99/test_coverage"><img src="https://api.codeclimate.com/v1/badges/9f5cd3acdaf5efef4d2f/test_coverage" /></a>
 [Render review](https://java-project-99-xpyl.onrender.com)
-[documentation](http://localhost:8080/swagger-ui/index.html)
+[documentation](http://java-project-99-xpyl.onrender.com/swagger-ui/index.html)
