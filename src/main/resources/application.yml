@@ -35,5 +35,7 @@ server:
     swagger-ui:
        path: swagger-ui.html
 
-
+  sentry:
+    dsn: https://320ce3d525e2cad38a5c1841686e753a@o4506462269997056.ingest.sentry.io/4506462400348160
+    traces-sample-rate: 1.0
 
