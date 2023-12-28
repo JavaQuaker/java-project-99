@@ -126,7 +126,6 @@ public class TasksControllerTest {
     @Test
     public void testUpdateTask() throws Exception {
         var user = userRepository.findByEmail("hexlet@example.com").orElseThrow(null);
-//        taskRepository.save(testTask);
         var dto = new TaskUpdateDTO();
         dto.setTitle(JsonNullable.of("new name"));
         dto.setStatus(JsonNullable.of("published"));

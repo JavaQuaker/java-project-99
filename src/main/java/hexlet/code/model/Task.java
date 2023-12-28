@@ -46,7 +46,6 @@ public class Task implements BaseEntity {
     private String description;
 
     @NotNull
-//    @ManyToOne(cascade = CascadeType.MERGE)
     @ManyToOne(fetch = FetchType.EAGER)
     private TaskStatus taskStatus;
 
@@ -55,55 +54,12 @@ public class Task implements BaseEntity {
     @ManyToOne(fetch = FetchType.EAGER)
     @NotNull
     private User assignee;
-//    @ManyToOne(cascade = CascadeType.MERGE)
-
 
     @CreatedDate
     private LocalDate createdAt;
 
-//    @ManyToMany(cascade = CascadeType.MERGE)
     @ManyToMany(fetch = FetchType.EAGER)
     @NotNull
     private Set<Label> labels = new HashSet<>();
 }
-//@Entity
-//@Getter
-//@Setter
-//@Table(name = "tasks")
-//@Builder
-//@NoArgsConstructor
-//@AllArgsConstructor
-//public class Task {
-//
-//    @Id
-//    @GeneratedValue(strategy = AUTO)
-//    private Long id;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "author", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-//    private User author;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "assignee", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-//    private User assignee;
-//
-//    @ManyToOne
-//    @JoinColumn(name = "taskStatus", foreignKey = @ForeignKey(value = ConstraintMode.NO_CONSTRAINT))
-//    private TaskStatus taskStatus;
-//
-//    @ManyToMany
-//    @Fetch(JOIN)
-//    private Set<Label> labels;
-//
-//    @NotBlank
-//    @Size(min = 3, max = 1000)
-//    private String name;
-//
-//    private String description;
-//
-//    private int index;
-//
-//    @CreationTimestamp
-//    @Temporal(TIMESTAMP)
-//    private Date createdAt;
-//}
+

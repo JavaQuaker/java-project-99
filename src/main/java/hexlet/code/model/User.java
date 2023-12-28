@@ -5,22 +5,16 @@ import jakarta.persistence.Table;
 import jakarta.persistence.Id;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.CascadeType;
 import jakarta.validation.constraints.Email;
-
 import jakarta.validation.constraints.NotBlank;
-
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
 import lombok.Getter;
-
-
-
 
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
@@ -28,11 +22,10 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
 
 
 @Entity
@@ -63,10 +56,7 @@ public class User implements BaseEntity, UserDetails {
     @LastModifiedDate
     private LocalDate updateAt;
 
-    @OneToMany(mappedBy = "assignee", fetch = FetchType.EAGER, cascade = CascadeType.MERGE)
-//    @OneToMany(fetch = FetchType.LAZY, mappedBy = "assignee", cascade = CascadeType.ALL)
-    private List<Task> tasks = new ArrayList<>();
-
+    @OneToMany(mappedBy = "assignee", fetch = FetchType.LAZY)
 
 
     @Override

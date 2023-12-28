@@ -18,7 +18,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.media.Content;
 
 @RestController
-//@RequestMapping("/login")
 @RequestMapping("/api")
 public class AuthenticationController {
     @Autowired

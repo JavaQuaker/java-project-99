@@ -52,12 +52,7 @@ public class UsersControllerTests {
     private ObjectMapper om;
     @Autowired
     private Faker faker;
-
-
-
-//    private JwtRequestPostProcessor token;
     private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
-
 
 
     @BeforeEach
@@ -70,10 +65,7 @@ public class UsersControllerTests {
         System.out.println("testUser.getLastName() = " + testUser.getLastName());
         System.out.println("testUser.getPassword() = " + testUser.getPassword());
         userRepository.save(testUser);
-
     }
-
-
 
     @Test
     public void testIndex() throws Exception {
@@ -104,9 +96,6 @@ public class UsersControllerTests {
 
     @Test
     public void testUpdateUser() throws Exception {
-//        userRepository.save(testUser);
-//        var data = new HashMap<>();
-//        data.put("firstName", "Nick");
         var data = Map.of(
                 "firstName", faker.name().firstName(),
                 "lastName", faker.name().lastName(),
@@ -120,7 +109,7 @@ public class UsersControllerTests {
         mockMvc.perform(request)
                 .andExpect(status().isOk());
         testUser = userRepository.findById(testUser.getId()).get();
-//
+
         System.out.println("qqqqq" + " " + "firstName" + " " + testUser.getFirstName());
         System.out.println("wwww" + " " + "firstname" + " " + data.get("firstName"));
         assertThat(testUser.getFirstName()).isEqualTo(data.get("firstName"));
@@ -131,7 +120,6 @@ public class UsersControllerTests {
 
     @Test
     public void testShowUser() throws Exception {
-//        userRepository.save(testUser);
         MockHttpServletRequestBuilder request = get("/api/users/{id}", testUser.getId()).with(token);
         var result = mockMvc.perform(request)
                 .andExpect(status().isOk())
@@ -145,7 +133,6 @@ public class UsersControllerTests {
     }
     @Test
     public void testDeleteUser() throws Exception {
-//        userRepository.save(testUser);
         var request = delete("/api/users/{id}", testUser.getId()).with(token);
         mockMvc.perform(request)
                .andExpect(status().isOk());
