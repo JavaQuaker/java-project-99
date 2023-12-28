@@ -116,10 +116,21 @@ public class TaskController {
         System.out.println("task getAssignee = " + task.getAssignee());
         System.out.println("task getDescription = " + task.getDescription());
 
-        Optional<TaskStatus> bySlug = taskStatusRepository.findBySlug(taskData.getStatus());
-        bySlug.ifPresent(task::setTaskStatus);
+//        Optional<TaskStatus> bySlug = taskStatusRepository.findBySlug(taskData.getStatus());
+//        bySlug.ifPresent(task::setTaskStatus);
+//        Optional<Task> byId = taskRepository.findById(task.getId());
+        var assigneeId = taskData.getAssigneeId();
+
+        if (assigneeId != null) {
+            var assignee = userRepository.findById(assigneeId).orElse(null);
+            task.setAssignee(assignee);
+        }
+
+        var statusSlug = taskData.getStatus();
+        var taskStatus = taskStatusRepository.findBySlug(statusSlug).orElse(null);
+
+        task.setTaskStatus(taskStatus);
         taskRepository.save(task);
-        Optional<Task> byId = taskRepository.findById(task.getId());
         var taskDTO = taskMapper.map(task);
         return taskDTO;
     }
