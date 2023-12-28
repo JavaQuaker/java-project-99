@@ -7,7 +7,7 @@ import hexlet.code.dto.TaskUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Task;
-import hexlet.code.model.TaskStatus;
+//import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
@@ -38,7 +38,7 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 
 
 import java.util.List;
-import java.util.Optional;
+//import java.util.Optional;
 
 @RestController
 @RequestMapping("/api/tasks")
@@ -116,9 +116,20 @@ public class TaskController {
         System.out.println("task getAssignee = " + task.getAssignee());
         System.out.println("task getDescription = " + task.getDescription());
 
-        Optional<TaskStatus> bySlug = taskStatusRepository.findBySlug(taskData.getStatus());
-        bySlug.ifPresent(task::setTaskStatus);
-        Optional<Task> byId = taskRepository.findById(task.getId());
+//        Optional<TaskStatus> bySlug = taskStatusRepository.findBySlug(taskData.getStatus());
+//        bySlug.ifPresent(task::setTaskStatus);
+//        Optional<Task> byId = taskRepository.findById(task.getId());
+        var assigneeId = taskData.getAssigneeId();
+
+        if (assigneeId != null) {
+            var assignee = userRepository.findById(assigneeId).orElse(null);
+            task.setAssignee(assignee);
+        }
+
+        var statusSlug = taskData.getStatus();
+        var taskStatus = taskStatusRepository.findBySlug(statusSlug).orElse(null);
+
+        task.setTaskStatus(taskStatus);
         taskRepository.save(task);
         var taskDTO = taskMapper.map(task);
         return taskDTO;

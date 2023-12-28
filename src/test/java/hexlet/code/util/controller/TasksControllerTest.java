@@ -34,6 +34,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import java.util.List;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -101,7 +102,8 @@ public class TasksControllerTest {
                 "assigneeId", 1L,
                 "title", faker.lorem().word(),
                 "content", faker.lorem().sentence(),
-                "status", "draft"
+                "status", "draft",
+                "taskLabelIds", List.of(1L)
         );
 
         var request = post("/api/tasks").with(token)
