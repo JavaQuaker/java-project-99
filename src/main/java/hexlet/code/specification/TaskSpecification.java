@@ -30,7 +30,7 @@ public class TaskSpecification {
                 status);
     }
     private Specification<Task> withLabelId(String labelId) {
-        return (root, query, cb) -> labelId == null ? cb.conjunction() : cb.equal(root.get("labels").get("id"),
+        return (root, query, cb) -> labelId == null ? cb.conjunction() : cb.like(root.get("labels").get("id"),
                 labelId);
     }
 }
