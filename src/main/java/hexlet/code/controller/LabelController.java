@@ -94,8 +94,6 @@ public class LabelController {
     })
     @DeleteMapping(path = "/{id}")
     public void delete(@PathVariable long id) {
-        var label = labelRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Label with id" + " " +  id + " " + "not found"));
         labelRepository.deleteById(id);
     }
 }
