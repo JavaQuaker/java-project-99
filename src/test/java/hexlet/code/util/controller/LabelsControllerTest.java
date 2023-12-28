@@ -130,7 +130,7 @@ public class LabelsControllerTest {
         labelRepository.save(testLabels);
         var request = delete("/api/labels/{id}", testLabels.getId()).with(token);
         mockMvc.perform(request)
-                    .andExpect(status().isOk());
+                    .andExpect(status().isNoContent());
         assertThat(labelRepository.existsById(testLabels.getId())).isFalse();
 
     }
