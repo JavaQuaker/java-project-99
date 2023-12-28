@@ -25,7 +25,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
+
 
 
 
@@ -58,7 +58,7 @@ public class User implements BaseEntity, UserDetails {
     private LocalDate updateAt;
 
     @OneToMany(mappedBy = "assignee", fetch = FetchType.LAZY)
-    private List<Task> tasks = new ArrayList<>();
+
 
 
     @Override

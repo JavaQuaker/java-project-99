@@ -52,14 +52,13 @@ public class Task implements BaseEntity {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-//    @NotNull
     private User assignee;
 
     @CreatedDate
     private LocalDate createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @NotNull
+
     private Set<Label> labels = new HashSet<>();
 }
 

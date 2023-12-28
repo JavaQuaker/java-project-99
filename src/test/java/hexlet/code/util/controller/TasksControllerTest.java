@@ -127,6 +127,25 @@ public class TasksControllerTest {
 
     }
     @Test
+    public void testWithoutLabel() throws Exception {
+        var data = Map.of(
+                "index", (Integer) faker.number().positive(),
+                "assigneeId", 1L,
+                "title", faker.lorem().word(),
+                "content", faker.lorem().sentence(),
+                "status", "draft"
+
+        );
+        var request = post("/api/tasks").with(token)
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(om.writeValueAsString(data));
+
+        mockMvc.perform(request)
+                .andExpect(status().isCreated());
+
+
+    }
+    @Test
     public void testUpdateTask() throws Exception {
         var user = userRepository.findByEmail("hexlet@example.com").orElseThrow(null);
         var dto = new TaskUpdateDTO();
