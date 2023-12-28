@@ -145,6 +145,7 @@ public class TaskController {
         @ApiResponse(responseCode = "404", description = "Task with that id not found")
     })
     @DeleteMapping(path = "/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(@PathVariable long id) {
         var task = taskRepository.findById(id)
                 .orElseThrow(() -> new ResourceNotFoundException("Task with id" + " " +  id + " " + "not found"));
