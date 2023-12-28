@@ -16,9 +16,11 @@ import org.mapstruct.NullValuePropertyMappingStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
+import java.util.List;
+import java.util.HashSet;
+import java.util.stream.Collectors;
+
 
 @Mapper(
         uses = {JsonNullableMapper.class, ReferenceMapper.class},
@@ -51,10 +53,16 @@ public abstract class TaskMapper {
     @Mapping(target = "description", source = "content")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
-    public Set<Label> toLabelsSet(List<Long> taskLabelIds) {
+//    public Set<Label> toLabelsSet(List<Long> taskLabelIds) {
+//        return new HashSet<>(labelRepository.findByIdIn(taskLabelIds).orElse(new HashSet<>()));
+//    }
+    public Set<Label> toLabelsSet(Set<Long> taskLabelIds) {
         if (taskLabelIds == null) {
             return null;
         }
-        return new HashSet<>(labelRepository.findByIdIn(taskLabelIds).orElse(new HashSet<>()));
+        return taskLabelIds.stream()
+                .map(v -> labelRepository.findById(v)
+                        .orElseThrow())
+                .collect(Collectors.toSet());
     }
 }
