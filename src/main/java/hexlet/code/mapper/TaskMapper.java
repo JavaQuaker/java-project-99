@@ -52,6 +52,9 @@ public abstract class TaskMapper {
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
     public Set<Label> toLabelsSet(List<Long> taskLabelIds) {
+        if (taskLabelIds == null) {
+            return null;
+        }
         return new HashSet<>(labelRepository.findByIdIn(taskLabelIds).orElse(new HashSet<>()));
     }
 }
