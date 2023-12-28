@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 public class TaskCreateDTO {
 
-    @NotNull
+//    @NotNull
     private Long assigneeId;
 
     @NotBlank
@@ -27,6 +27,6 @@ public class TaskCreateDTO {
 
     @NotNull
     private String status;
-    @NotNull
+
     private List<Long> taskLabelIds = new ArrayList<>();
 }

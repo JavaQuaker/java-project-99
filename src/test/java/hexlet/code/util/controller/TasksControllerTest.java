@@ -135,6 +135,7 @@ public class TasksControllerTest {
                 "content", faker.lorem().sentence(),
                 "status", "draft"
 
+
         );
         var request = post("/api/tasks").with(token)
                 .contentType(MediaType.APPLICATION_JSON)
@@ -142,7 +143,6 @@ public class TasksControllerTest {
 
         mockMvc.perform(request)
                 .andExpect(status().isCreated());
-
 
     }
     @Test
