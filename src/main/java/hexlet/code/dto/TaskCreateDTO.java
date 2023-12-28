@@ -13,7 +13,7 @@ import java.util.List;
 @Getter
 public class TaskCreateDTO {
 
-//    @NotNull
+    @NotNull
     private Long assigneeId;
 
     @NotBlank
