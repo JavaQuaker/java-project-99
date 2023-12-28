@@ -52,7 +52,7 @@ public class Task implements BaseEntity {
 
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @NotNull
+//    @NotNull
     private User assignee;
 
     @CreatedDate
