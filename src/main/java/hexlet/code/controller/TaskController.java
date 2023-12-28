@@ -118,6 +118,7 @@ public class TaskController {
 
         Optional<TaskStatus> bySlug = taskStatusRepository.findBySlug(taskData.getStatus());
         bySlug.ifPresent(task::setTaskStatus);
+        taskRepository.save(task);
         Optional<Task> byId = taskRepository.findById(task.getId());
 //        var assigneeId = taskData.getAssigneeId();
 //
@@ -130,7 +131,7 @@ public class TaskController {
 //        var taskStatus = taskStatusRepository.findBySlug(statusSlug).orElse(null);
 //
 //        task.setTaskStatus(taskStatus);
-        taskRepository.save(task);
+
         var taskDTO = taskMapper.map(task);
         return taskDTO;
     }

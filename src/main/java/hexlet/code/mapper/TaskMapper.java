@@ -54,6 +54,4 @@ public abstract class TaskMapper {
     public Set<Label> toLabelsSet(List<Long> taskLabelIds) {
         return new HashSet<>(labelRepository.findByIdIn(taskLabelIds).orElse(new HashSet<>()));
     }
-
-
 }
