@@ -123,6 +123,7 @@ public class TasksControllerTest {
         assertThat(task.getDescription()).isEqualTo(data.get("content"));
         assertThat(task.getTaskStatus().getName()).isEqualTo("draft");
         assertThat(task.getAssignee().getId()).isEqualTo(data.get("assigneeId"));
+        assertThat(task.getLabels().iterator().next().getId()).isEqualTo(1L);
 
     }
     @Test

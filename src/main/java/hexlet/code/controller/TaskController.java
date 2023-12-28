@@ -104,6 +104,7 @@ public class TaskController {
 
     @Operation(summary = "Create new task")
     @ApiResponse(responseCode = "201", description = "Task created")
+    @ApiResponse(responseCode = "400", description = "Task did not create")
     @PostMapping(path = "")
     @ResponseStatus(HttpStatus.CREATED)
     public TaskDTO create(@Valid @RequestBody TaskCreateDTO taskData) {
