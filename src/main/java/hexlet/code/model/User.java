@@ -10,7 +10,7 @@ import jakarta.persistence.EntityListeners;
 import jakarta.persistence.Column;
 import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.EqualsAndHashCode;
 import lombok.Setter;
@@ -49,8 +49,8 @@ public class User implements BaseEntity, UserDetails {
     private String email;
 
     @Size(min = 3)
-    @NotBlank
-    private String password;
+    @NotNull
+    private String passwordDigest;
 
     @CreatedDate
     private LocalDate createdAt;
@@ -67,7 +67,7 @@ public class User implements BaseEntity, UserDetails {
     }
     @Override
     public String getPassword() {
-        return password;
+        return passwordDigest;
     }
 
     @Override
