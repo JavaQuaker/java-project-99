@@ -8,6 +8,7 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Task;
 
+import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
@@ -118,15 +119,15 @@ public class TaskController {
 
 //        Optional<TaskStatus> bySlug = taskStatusRepository.findBySlug(taskData.getStatus());
 //        bySlug.ifPresent(task::setTaskStatus);
-        var assigneeId = taskData.getAssigneeId();
+        Long assigneeId = taskData.getAssigneeId();
 
         if (assigneeId != null) {
             var assignee = userRepository.findById(assigneeId).orElse(null);
             task.setAssignee(assignee);
         }
 
-        var statusSlug = taskData.getStatus();
-        var taskStatus = taskStatusRepository.findBySlug(statusSlug).orElse(null);
+        String statusSlug = taskData.getStatus();
+        TaskStatus taskStatus = taskStatusRepository.findBySlug(statusSlug).orElse(null);
 
         task.setTaskStatus(taskStatus);
 
