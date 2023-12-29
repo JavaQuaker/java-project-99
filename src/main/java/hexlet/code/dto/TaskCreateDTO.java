@@ -12,7 +12,6 @@ import java.util.Set;
 @Getter
 public class TaskCreateDTO {
 
-    @NotNull
     private Long assigneeId;
 
     @NotBlank
