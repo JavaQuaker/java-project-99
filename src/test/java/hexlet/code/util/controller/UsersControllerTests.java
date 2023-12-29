@@ -135,7 +135,7 @@ public class UsersControllerTests {
     public void testDeleteUser() throws Exception {
         var request = delete("/api/users/{id}", testUser.getId()).with(token);
         mockMvc.perform(request)
-               .andExpect(status().isOk());
+               .andExpect(status().isNoContent());
         assertThat(userRepository.existsById(testUser.getId())).isFalse();
 
     }
