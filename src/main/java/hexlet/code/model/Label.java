@@ -32,7 +32,4 @@ public class Label implements BaseEntity {
 
     @CreatedDate
     private LocalDate createdAt;
-
-
-
 }

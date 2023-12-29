@@ -1,6 +1,5 @@
 package hexlet.code.controller;
 
-
 import hexlet.code.dto.TaskStatusDTO;
 import hexlet.code.dto.TaskStatusCreateDTO;
 import hexlet.code.dto.TaskStatusUpdateDTO;
@@ -23,10 +22,8 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
 import java.util.List;
 import io.swagger.v3.oas.annotations.Operation;
-
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
@@ -87,7 +84,6 @@ public class TaskStatusesController {
         return taskStatusDTO;
 
     }
-
     @Operation(summary = "Delete status by his id")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Status deleted"),

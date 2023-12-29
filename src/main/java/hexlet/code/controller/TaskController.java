@@ -7,13 +7,11 @@ import hexlet.code.dto.TaskUpdateDTO;
 import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.TaskMapper;
 import hexlet.code.model.Task;
-
 import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.specification.TaskSpecification;
-
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
@@ -36,7 +34,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.DeleteMapping;
-
 import java.util.List;
 
 
@@ -47,7 +44,6 @@ public class TaskController {
     private TaskRepository taskRepository;
     @Autowired
     private UserRepository userRepository;
-
     @Autowired
     private TaskMapper taskMapper;
     @Autowired
@@ -101,7 +97,6 @@ public class TaskController {
         return taskMapper.map(task);
     }
 
-
     @Operation(summary = "Create new task")
     @ApiResponse(responseCode = "201", description = "Task created")
     @ApiResponse(responseCode = "400", description = "Task did not create")
@@ -117,8 +112,6 @@ public class TaskController {
         System.out.println("task getAssignee = " + task.getAssignee());
         System.out.println("task getDescription = " + task.getDescription());
 
-//        Optional<TaskStatus> bySlug = taskStatusRepository.findBySlug(taskData.getStatus());
-//        bySlug.ifPresent(task::setTaskStatus);
         Long assigneeId = taskData.getAssigneeId();
 
         if (assigneeId != null) {
@@ -128,11 +121,9 @@ public class TaskController {
 
         String statusSlug = taskData.getStatus();
         TaskStatus taskStatus = taskStatusRepository.findBySlug(statusSlug).orElse(null);
-
         task.setTaskStatus(taskStatus);
-
         taskRepository.save(task);
-//        Optional<Task> byId = taskRepository.findById(task.getId());
+
 
         var taskDTO = taskMapper.map(task);
         return taskDTO;

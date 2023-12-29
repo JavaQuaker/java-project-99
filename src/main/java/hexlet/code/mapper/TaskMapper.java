@@ -5,8 +5,6 @@ import hexlet.code.dto.TaskCreateDTO;
 import hexlet.code.dto.TaskUpdateDTO;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
-//import hexlet.code.model.User;
-//import hexlet.code.model.TaskStatus;
 import hexlet.code.repository.LabelRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
@@ -16,10 +14,8 @@ import org.mapstruct.MappingTarget;
 import org.mapstruct.MappingConstants;
 import org.mapstruct.ReportingPolicy;
 import org.mapstruct.NullValuePropertyMappingStrategy;
-//import org.openapitools.jackson.nullable.JsonNullable;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,9 +53,6 @@ public abstract class TaskMapper {
     @Mapping(target = "description", source = "content")
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
-//    public Set<Label> toLabelsSet(List<Long> taskLabelIds) {
-//        return new HashSet<>(labelRepository.findByIdIn(taskLabelIds).orElse(new HashSet<>()));
-//    }
     public Set<Label> toLabelsSet(Set<Long> taskLabelIds) {
         if (taskLabelIds == null) {
             return null;
