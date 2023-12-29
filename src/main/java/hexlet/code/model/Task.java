@@ -58,7 +58,7 @@ public class Task implements BaseEntity {
     private LocalDate createdAt;
 
     @ManyToMany(fetch = FetchType.EAGER)
-    @NotBlank
+    @NotNull
     private Set<Label> labels = new HashSet<>();
 }
 
