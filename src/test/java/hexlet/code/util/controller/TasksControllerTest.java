@@ -134,8 +134,8 @@ public class TasksControllerTest {
                 "index", (Integer) faker.number().positive(),
                 "assigneeId", 1L,
                 "title", faker.lorem().word(),
-                "content", faker.lorem().sentence(),
-                "status", "draft"
+                "content", faker.lorem().sentence()
+//                "status", "draft"
 
         );
         var request = post("/api/tasks").with(token)

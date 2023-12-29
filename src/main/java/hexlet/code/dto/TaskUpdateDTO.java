@@ -17,13 +17,13 @@ public class TaskUpdateDTO {
     @NotBlank
     private JsonNullable<String> title;
 
-    @NotNull
+
     private JsonNullable<Integer> index;
 
-    @NotBlank
+
     private JsonNullable<String> content;
 
-    @NotBlank
+    @NotNull
     private JsonNullable<String> status;
 
     @NotNull

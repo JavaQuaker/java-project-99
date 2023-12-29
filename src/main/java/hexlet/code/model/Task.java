@@ -50,7 +50,6 @@ public class Task implements BaseEntity {
     private TaskStatus taskStatus;
 
 
-
     @ManyToOne
     private User assignee;
 
