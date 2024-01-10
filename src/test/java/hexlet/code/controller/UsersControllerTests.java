@@ -7,8 +7,10 @@ import hexlet.code.model.Task;
 import hexlet.code.model.User;
 import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.UserRepository;
+import hexlet.code.util.JWTUtils;
 import hexlet.code.util.ModelGenerator;
 import hexlet.code.mapper.UserMapper;
+import hexlet.code.util.UserUtils;
 import net.datafaker.Faker;
 import org.assertj.core.api.Assertions;
 import org.instancio.Instancio;
@@ -33,6 +35,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 
 
+
 @SpringBootTest
 @AutoConfigureMockMvc
 public class UsersControllerTests {
@@ -53,8 +56,13 @@ public class UsersControllerTests {
     @Autowired
     private ObjectMapper om;
     @Autowired
+    private UserUtils userUtils;
+    @Autowired
+    private JWTUtils jwtUtils;
+    @Autowired
     private Faker faker;
     private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
+
 
 
     @BeforeEach
@@ -74,6 +82,7 @@ public class UsersControllerTests {
         mockMvc.perform(get("/api/users").with(jwt()))
                 .andExpect(status().isOk());
     }
+
     @Test
     public void testCreateUser() throws Exception {
 
@@ -133,15 +142,24 @@ public class UsersControllerTests {
         );
 
     }
+
     @Test
     public void testDeleteUser() throws Exception {
+        token = jwt().jwt(builder -> builder.subject(testUser.getEmail()));
         var request = delete("/api/users/{id}", testUser.getId()).with(token);
         mockMvc.perform(request)
-               .andExpect(status().isNoContent());
+                .andExpect(status().isNoContent());
         assertThat(userRepository.existsById(testUser.getId())).isFalse();
 
     }
 }
+
+
+
+
+
+
+
 
 
 

@@ -3,6 +3,7 @@ package hexlet.code.mapper;
 import hexlet.code.dto.TaskDTO;
 import hexlet.code.dto.TaskCreateDTO;
 import hexlet.code.dto.TaskUpdateDTO;
+import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.model.Label;
 import hexlet.code.model.Task;
 import hexlet.code.repository.LabelRepository;
@@ -54,12 +55,10 @@ public abstract class TaskMapper {
     public abstract void update(TaskUpdateDTO dto, @MappingTarget Task model);
 
     public Set<Label> toLabelsSet(Set<Long> taskLabelIds) {
-        if (taskLabelIds == null) {
-            return null;
-        }
-        return taskLabelIds.stream()
+        return taskLabelIds == null ? null : taskLabelIds.stream()
                 .map(v -> labelRepository.findById(v)
-                        .orElseThrow())
+                        .orElseThrow(() -> new ResourceNotFoundException("ResourceNotFoundException")))
                 .collect(Collectors.toSet());
+
     }
 }

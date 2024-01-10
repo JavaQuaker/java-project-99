@@ -1,5 +1,6 @@
 package hexlet.code.util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
@@ -12,7 +13,7 @@ import lombok.AllArgsConstructor;
 public class UserUtils {
     @Autowired
     private UserRepository userRepository;
-
+    @Bean
     public User getCurrentUser() {
         var authentication = SecurityContextHolder.getContext().getAuthentication();
         if (authentication == null || !authentication.isAuthenticated()) {

@@ -7,11 +7,13 @@ import hexlet.code.exception.ResourceNotFoundException;
 import hexlet.code.mapper.UserMapper;
 import hexlet.code.model.User;
 import hexlet.code.repository.UserRepository;
+import hexlet.code.util.UserUtils;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -38,6 +40,10 @@ public class UserController {
     private UserRepository userRepository;
     @Autowired
     private UserMapper userMapper;
+    @Autowired
+    private UserUtils utils;
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 
 
     @Operation(summary = "Get list of all users")
@@ -106,10 +112,13 @@ public class UserController {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @Parameter(description = "Id of user to be deleted")
-            @PathVariable long id) {
-        var user = userRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("User with id" + " " +  id + " " + "not found"));
-        userRepository.deleteById(id);
+            @PathVariable Long id) {
+        var currentUser = utils.getCurrentUser();
+        if (currentUser.getId() == id) {
+            var user = userRepository.findById(id)
+                    .orElseThrow(() -> new ResourceNotFoundException("User with id" + " " + id + " " + "not found"));
+            userRepository.deleteById(id);
+        }
     }
 }
 

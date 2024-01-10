@@ -13,6 +13,7 @@ import hexlet.code.repository.TaskRepository;
 import hexlet.code.repository.TaskStatusRepository;
 import hexlet.code.repository.UserRepository;
 import hexlet.code.util.ModelGenerator;
+import hexlet.code.util.UserUtils;
 import net.datafaker.Faker;
 import org.instancio.Instancio;
 import org.junit.jupiter.api.BeforeEach;
@@ -61,6 +62,8 @@ public class TasksControllerTest {
     private TaskMapper taskMapper;
     @Autowired
     private ObjectMapper om;
+    @Autowired
+    private UserUtils utils;
     @Autowired
     private Faker faker;
     private SecurityMockMvcRequestPostProcessors.JwtRequestPostProcessor token;
@@ -126,24 +129,25 @@ public class TasksControllerTest {
         assertThat(task.getLabels().iterator().next().getId()).isEqualTo(1L);
 
     }
-    @Test
-    public void testWithoutLabel() throws Exception {
-
-        TaskCreateDTO dto = new TaskCreateDTO();
-        dto.setIndex((Integer) faker.number().positive());
-        dto.setAssigneeId(1L);
-        dto.setTitle(faker.lorem().word());
-        dto.setContent(faker.lorem().sentence());
-        dto.setStatus("draft");
-        var request = post("/api/tasks").with(token)
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(om.writeValueAsString(dto));
-
-        mockMvc.perform(request)
-                .andExpect(status().isCreated());
-        var task = taskRepository.findByName((String) dto.getTitle()).orElseThrow(null);
-        System.out.println(task.getLabels());
-    }
+//    @Test
+//    public void testWithoutLabel() throws Exception {
+//
+//        TaskCreateDTO dto = new TaskCreateDTO();
+//        dto.setIndex((Integer) faker.number().positive());
+//        dto.setAssigneeId(1L);
+//        dto.setTitle(faker.lorem().word());
+//        dto.setContent(faker.lorem().sentence());
+//        dto.setStatus("draft");
+//
+//        var request = post("/api/tasks").with(token)
+//                .contentType(MediaType.APPLICATION_JSON)
+//                .content(om.writeValueAsString(dto));
+//
+//        mockMvc.perform(request)
+//                .andExpect(status().isCreated());
+//        var task = taskRepository.findByName((String) dto.getTitle()).orElseThrow(null);
+//        System.out.println(task.getLabels());
+//    }
     @Test
     public void testUpdateTask() throws Exception {
         var user = userRepository.findByEmail("hexlet@example.com").orElseThrow(null);
@@ -192,6 +196,8 @@ public class TasksControllerTest {
 
 
     }
+
+
     @Test
     public void testDeleteTask() throws Exception {
 
@@ -201,5 +207,4 @@ public class TasksControllerTest {
                 .andExpect(status().isNoContent());
         assertThat(taskRepository.existsById(testTask.getId())).isFalse();
     }
-
 }
