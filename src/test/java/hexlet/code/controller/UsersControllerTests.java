@@ -142,7 +142,6 @@ public class UsersControllerTests {
         );
 
     }
-
     @Test
     public void testDeleteUser() throws Exception {
         token = jwt().jwt(builder -> builder.subject(testUser.getEmail()));
@@ -151,6 +150,13 @@ public class UsersControllerTests {
                 .andExpect(status().isNoContent());
         assertThat(userRepository.existsById(testUser.getId())).isFalse();
 
+    }
+    @Test
+    public void testDeleteAnotherUser() throws Exception {
+        var request = delete("/api/users/{id}", testUser.getId()).with(token);
+        mockMvc.perform(request)
+                .andExpect(status().isNoContent());
+                assertThat(userRepository.existsById(testUser.getId())).isTrue();
     }
 }
 
