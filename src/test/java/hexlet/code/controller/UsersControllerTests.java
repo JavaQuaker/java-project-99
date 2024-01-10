@@ -1,5 +1,4 @@
 package hexlet.code.controller;
-
 import hexlet.code.dto.UserCreateDTO;
 import hexlet.code.dto.UserUpdateDTO;
 import hexlet.code.mapper.TaskMapper;
