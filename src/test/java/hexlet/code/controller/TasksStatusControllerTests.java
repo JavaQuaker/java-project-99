@@ -39,12 +39,9 @@ public class TasksStatusControllerTests {
     private TaskStatusRepository taskStatusRepository;
     @Autowired
     private ObjectMapper om;
-
-
     private TaskStatus testTaskStatus;
     @Autowired
     private TaskStatusMapper taskStatusMapper;
-
     @Autowired
     private ModelGenerator modelGenerator;
     @Autowired

@@ -97,7 +97,6 @@ public class TasksControllerTest {
                 .andExpect(status().isOk());
         clear();
     }
-
     @Test
     public void testCreateTask() throws Exception {
 
@@ -127,27 +126,8 @@ public class TasksControllerTest {
         assertThat(task.getTaskStatus().getName()).isEqualTo("draft");
         assertThat(task.getAssignee().getId()).isEqualTo(dto.getAssigneeId());
         assertThat(task.getLabels().iterator().next().getId()).isEqualTo(1L);
-
     }
-//    @Test
-//    public void testWithoutLabel() throws Exception {
-//
-//        TaskCreateDTO dto = new TaskCreateDTO();
-//        dto.setIndex((Integer) faker.number().positive());
-//        dto.setAssigneeId(1L);
-//        dto.setTitle(faker.lorem().word());
-//        dto.setContent(faker.lorem().sentence());
-//        dto.setStatus("draft");
-//
-//        var request = post("/api/tasks").with(token)
-//                .contentType(MediaType.APPLICATION_JSON)
-//                .content(om.writeValueAsString(dto));
-//
-//        mockMvc.perform(request)
-//                .andExpect(status().isCreated());
-//        var task = taskRepository.findByName((String) dto.getTitle()).orElseThrow(null);
-//        System.out.println(task.getLabels());
-//    }
+
     @Test
     public void testUpdateTask() throws Exception {
         var user = userRepository.findByEmail("hexlet@example.com").orElseThrow(null);
@@ -193,10 +173,7 @@ public class TasksControllerTest {
                 v -> v.node("content").isEqualTo(testTask.getDescription()),
                 v -> v.node("status").isEqualTo(testTask.getTaskStatus().getName())
         );
-
-
     }
-
 
     @Test
     public void testDeleteTask() throws Exception {

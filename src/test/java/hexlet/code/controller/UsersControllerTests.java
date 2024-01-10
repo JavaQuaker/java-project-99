@@ -139,7 +139,6 @@ public class UsersControllerTests {
                 v -> v.node("firstName").isEqualTo(testUser.getFirstName()),
                 v -> v.node("email").isEqualTo(testUser.getEmail())
         );
-
     }
     @Test
     public void testDeleteUser() throws Exception {
