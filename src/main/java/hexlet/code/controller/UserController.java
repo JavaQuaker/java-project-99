@@ -13,6 +13,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -36,6 +37,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
+    private static final String ONLY_OWNER_BY_ID = """
+            @userRepository.findById(#id).get().getEmail() == authentication.name
+        """;
+
     @Autowired
     private UserRepository userRepository;
     @Autowired
@@ -108,17 +113,16 @@ public class UserController {
         @ApiResponse(responseCode = "200", description = "User deleted"),
         @ApiResponse(responseCode = "404", description = "User with that id not found")
     })
+    @PreAuthorize(ONLY_OWNER_BY_ID)
     @DeleteMapping(path = "/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void delete(
             @Parameter(description = "Id of user to be deleted")
             @PathVariable Long id) {
         var currentUser = utils.getCurrentUser();
-        if (currentUser.getId() == id) {
-            var user = userRepository.findById(id)
+        var user = userRepository.findById(id)
                     .orElseThrow(() -> new ResourceNotFoundException("User with id" + " " + id + " " + "not found"));
-            userRepository.deleteById(id);
-        }
+        userRepository.deleteById(id);
     }
 }
 

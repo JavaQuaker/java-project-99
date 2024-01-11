@@ -151,7 +151,16 @@ public class UsersControllerTests {
     }
     @Test
     public void testDeleteAnotherUser() throws Exception {
-        var request = delete("/api/users/{id}", testUser.getId()).with(token);
+
+        User user = new User();
+        user.setFirstName("Alexey");
+        user.setLastName("Berezovskiy");
+        user.setEmail("leha_s78@mail.ru");
+        user.setPasswordDigest("qwerty");
+        token = jwt().jwt(builder -> builder.subject(user.getEmail()));
+        userRepository.save(user);
+
+        var request = delete("/api/users/{id}", user.getId()).with(token);
         mockMvc.perform(request)
                 .andExpect(status().isNoContent());
         assertThat(userRepository.existsById(testUser.getId())).isTrue();
