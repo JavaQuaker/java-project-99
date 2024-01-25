@@ -12,7 +12,8 @@
 
 
 <h2>Run</h2>
-Для первого входа в приложение:
+Для первого входа в приложение
+
 ```
 <p>username: hexlet@example.com</p>
 <p>password: qwerty</p>
