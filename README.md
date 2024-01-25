@@ -15,8 +15,8 @@
 Для первого входа в приложение
 
 ```
-<p>username: hexlet@example.com</p>
-<p>password: qwerty</p>
+username: hexlet@example.com
+password: qwerty
 ```
 
 
