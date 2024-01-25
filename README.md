@@ -17,3 +17,10 @@
 <p3><h5>password: qwerty</h5></p3>
 
 
+```ruby
+require 'redcarpet'
+markdown = Redcarpet.new("Hello World!")
+puts markdown.to_html
+```
+
+
