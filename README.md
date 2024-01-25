@@ -11,6 +11,6 @@
 [documentation](http://java-project-99-xpyl.onrender.com/swagger-ui/index.html)
 
 <h2>Run</h2>
-Для первого входа в приложение:
-username: hexlet@example.com
-password: qwerty
+<p>Для первого входа в приложение:</p>
+<p>username: hexlet@example.com</p>
+<p>password: qwerty</p>
