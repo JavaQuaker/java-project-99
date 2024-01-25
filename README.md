@@ -10,11 +10,12 @@
 [Render review](https://java-project-99-xpyl.onrender.com)
 [documentation](http://java-project-99-xpyl.onrender.com/swagger-ui/index.html)
 
-
+```
 <h2>Run</h2>
 Для первого входа в приложение:
 <p><h5>username: hexlet@example.com</h5></p3>
 <p3><h5>password: qwerty</h5></p3>
+```
 
 
 ```ruby
