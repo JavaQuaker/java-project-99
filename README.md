@@ -11,19 +11,10 @@
 [documentation](http://java-project-99-xpyl.onrender.com/swagger-ui/index.html)
 
 
-<button id="copyButton">Копировать</button>
-<br>
-<textarea id="copyText" rows="4" cols="50">
-    username: hexlet@example.com
-    password: qwerty
-</textarea>
-
-<script>
-    document.getElementById('copyButton').addEventListener('click', function() {
-        var copyText = document.getElementById('copyText');
-        copyText.select();
-        document.execCommand('copy');
-        alert('Текст скопирован: ' + copyText.value);
-    });
-</script>
+<h2>Run</h2>
+Для первого входа в приложение:
+```
+<p><h5>username: hexlet@example.com</h5></p3>
+<p3><h5>password: qwerty</h5></p3>
+```
 
